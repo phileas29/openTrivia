@@ -1,0 +1,84 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Open Trivia
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Open Trivia</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <section [hidden]="step != 0 ? 'hidden' : ''">
+    <ion-item>
+      <ion-label>Votre nom :</ion-label>
+      <ion-input [(ngModel)]="name"></ion-input>
+    </ion-item>
+
+    <ion-list>
+      <ion-item>
+        <ion-select placeholder="Difficulté" [(ngModel)]="levelChoose">
+          <ion-select-option *ngFor="let level of levels" [value]="level">{{ level.name }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-item>
+      <ion-toggle [(ngModel)]="doRemember"></ion-toggle>
+      <ion-label>Je veux mémoriser ces infos</ion-label>
+    </ion-item>
+
+    <ion-button (click)="validateForm()">Valider</ion-button>
+  </section>
+
+  <section [hidden]="step != 1 ? 'hidden' : ''">
+    <ion-toolbar>
+      <ion-title>Bienvenue {{name}} (score={{score}})</ion-title>
+    </ion-toolbar>
+ 
+    <ion-list-header>
+      <ion-label>Question n°{{increment+1}} : {{question}}</ion-label>
+    </ion-list-header>
+
+    <ion-list>
+      <ion-item *ngFor="let a of answers; let i = index">
+        <ion-button *ngIf="!buttons[1]; " [color]="a.isSelected ? 'dark' : 'light'" (click)="chooseAnswer(a.id)">{{i+1}} : {{a.name}}</ion-button>
+        <ion-button *ngIf="buttons[1]" [color]="a.isCorrect && a.isSelected ? 'success' : a.isCorrect ? 'warning' : a.isSelected ? 'danger' : 'light'">{{i+1}} : {{a.name}}</ion-button>
+      </ion-item>
+    </ion-list>
+
+    <ion-button *ngIf="buttons[0]" (click)="validateThisQuestion()">Valider</ion-button>
+    <ion-button *ngIf="buttons[1]" (click)="next()">Question suivante</ion-button>
+  </section>
+
+  <section [hidden]="step != 2 ? 'hidden' : ''">
+    <ion-toolbar>
+      <ion-title>Merci d'avoir participer à ce questionnaire !</ion-title>
+    </ion-toolbar>
+
+    <ion-button (click)="startAgain()">Recommencer</ion-button>
+  </section>
+
+  <section hidden="hidden">
+    <ion-list>
+      <ion-item>
+        <ion-label>{{name}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{levelChoose.id}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{doRemember}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{increment}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </section>
+
+</ion-content>
